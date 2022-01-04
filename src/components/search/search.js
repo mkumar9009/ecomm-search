@@ -1,7 +1,18 @@
-const SearchBar = ({searchQuery,setSearchQuery}) => (
-    <form action="/" method="get">
+import { createBrowserHistory } from 'history'
+
+
+const SearchBar = ({searchQuery,setSearchQuery}) => {
+    const history = createBrowserHistory();
+    const onSubmit = (e) => {
+        history.push(`?s=${searchQuery}`);
+        e.preventDefault();
+    }
+
+
+return (
+    <form action="/" method="get" autoComplete="off" onSubmit={onSubmit}>
         <label htmlFor="header-search">
-            <span className="visually-hidden">Search blog posts</span>
+            <span className="visually-hidden">Search products</span>
         </label>
         <input
             value={searchQuery}
@@ -14,5 +25,5 @@ const SearchBar = ({searchQuery,setSearchQuery}) => (
         <button type="submit">Search</button>
     </form>
 );
-
+};
 export default SearchBar;

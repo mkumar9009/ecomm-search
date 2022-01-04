@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Search from './components/search/search';
 import { useState } from 'react';
@@ -35,7 +34,7 @@ const App = () => {
   const filteredPosts = filterPosts(posts,searchQuery)
 
   return (
-      <div>
+      <div className="search-area" >
           <Search 
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
