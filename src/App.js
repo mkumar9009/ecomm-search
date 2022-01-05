@@ -18,7 +18,7 @@ const filterPosts = (posts, query) => {
 const App = () => {
 
   const url = 'https://mayankapis.bakewish.in/api/floweraura/cakes/regular'
-  const [prods,setProds] = useState('');
+  const [prods,setProds] = useState([]);
 
   useEffect (() => {
     getPopularProds();
