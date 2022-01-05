@@ -1,13 +1,8 @@
 import './App.css';
 import Search from './components/search/search';
-import { useState } from 'react';
-
-const posts = [
-  { id: '1', name: 'This first post is about React' },
-  { id: '2', name: 'This next post is about Preact' },
-  { id: '3', name: 'We have yet another React post!' },
-  { id: '4', name: 'This is the fourth and final post' },
-];
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 
 const filterPosts = (posts, query) => {
   if (!query) {
@@ -15,13 +10,30 @@ const filterPosts = (posts, query) => {
   }
   console.log(query)
   return posts.filter((post) => {
-      const postName = post.name.toLowerCase();
-      return postName.includes(query);
+      const postTitle = post.title.toLowerCase();
+      return postTitle.includes(query);
   });
 };
 
 const App = () => {
 
+  const url = 'https://mayankapis.bakewish.in/api/floweraura/cakes/regular'
+  const [prods,setProds] = useState('');
+
+  useEffect (() => {
+    getPopularProds();
+    },[])
+
+  const getPopularProds = () => {
+    axios.get(url)
+    .then((response) => {
+      const prodItems=response.data.data.results;
+      console.log('in effect',prodItems);
+      setProds(prodItems);
+  })
+  .catch (error => console.error(`Error: $error`));
+  }
+  
   const searchurl = window.location.href;
   let query=''
   if (searchurl.includes('=')){
@@ -31,7 +43,7 @@ const App = () => {
     query =''
   }
   const [searchQuery, setSearchQuery] = useState(query || '');
-  const filteredPosts = filterPosts(posts,searchQuery)
+  const filteredPosts = filterPosts(prods,searchQuery)
 
   return (
       <div className="search-area" >
@@ -41,7 +53,7 @@ const App = () => {
           />
           <ul>
               {filteredPosts.map((post) => (
-                <li key={post.id}>{post.name}</li>
+                <li key={post.id}>{post.title}</li>
               ))}
           </ul>
       </div>
