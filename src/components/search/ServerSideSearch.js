@@ -1,20 +1,9 @@
-import './App.css';
-import SearchBar from './components/search/search';
+import '../../App.css';
+import SearchBar from './search';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const filterPosts = (posts, query) => {
-  if (!query) {
-      return posts;
-  }
-  console.log(query)
-  return posts.filter((post) => {
-      const postTitle = post.title.toLowerCase();
-      return postTitle.includes(query);
-  });
-};
-
-const App = () => {
+const ServerSideSearch = () => {
 
   const url = 'https://mayankapis.bakewish.in/api/floweraura/cakes/regular'
   const [prods,setProds] = useState([]);
@@ -41,22 +30,31 @@ const App = () => {
   else {
     query =''
   }
-  const [searchQuery, setSearchQuery] = useState(query || '');
-  const filteredPosts = filterPosts(prods,searchQuery)
+
+  const updateProds = ( newProds) => {
+    setProds(newProds)
+  }
+
+// prods is used as a state 
+// once the searchQuery is being changed we will render the component
+// and when the searchApi is updating prods will it call the component to re-render?
+
+  
+  // if (searchQuery.length>0) 
+  // {
+  //   getMatchingProds(searchQuery)
+  // }
 
   return (
       <div className="search-area" >
-          <SearchBar 
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-          />
+          <SearchBar newProds={updateProds} />
           <ul>
-              {filteredPosts.map((post) => (
-                <li key={post.nid}>{post.title}</li>
+              {prods.map((prod) => (
+                <li key={prod.nid}>{prod.title}</li>
               ))}
           </ul>
       </div>
   );
 }
 
-export default App;
+export default ServerSideSearch;
